@@ -3,7 +3,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from .config import settings
-from .database import Base, engine, get_db
+from .database import Base, SessionLocal, engine, get_db
 from .intelligence import classify_ticket, generate_answer, retrieve_articles
 from .models import ConversationMessage, KnowledgeArticle, Ticket
 from .schemas import ArticleCreate, ArticleOut, AskRequest, AskResponse, TicketCreate, TicketOut
@@ -14,7 +14,7 @@ app = FastAPI(title=settings.app_name, version="0.1.0",
 @app.on_event("startup")
 def startup():
     Base.metadata.create_all(bind=engine)
-    db = next(get_db())
+    db = SessionLocal()
     try:
         if db.query(KnowledgeArticle).count() == 0:
             db.add_all([
