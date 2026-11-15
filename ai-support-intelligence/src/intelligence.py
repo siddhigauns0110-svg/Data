@@ -43,19 +43,19 @@ def fallback_answer(question: str, matches: list) -> str:
     for article, _score in matches:
         excerpt = re.sub(r"\s+", " ", article.content).strip()
         parts.append(f"**{article.title}:** {excerpt[:700]}")
-    return "I found this information in the support knowledge base. Please verify it for your specific account or integration.\n\\n" + "\\n\\n".join(parts)
+    return "I found this information in the support knowledge base. Please verify it for your specific account or integration.\n\n" + "\n\n".join(parts)
 
 def generate_answer(question: str, matches: list, api_key: str | None, model: str):
     if api_key and matches:
         try:
             from openai import OpenAI
-            context = "\\n\\n".join(f"Source: {a.title}\\n{a.content}" for a, _ in matches)
+            context = "\n\n".join(f"Source: {a.title}\n{a.content}" for a, _ in matches)
             client = OpenAI(api_key=api_key)
             response = client.chat.completions.create(
                 model=model, temperature=0.2,
                 messages=[
                     {"role": "system", "content": "Answer only from the supplied knowledge-base context. If it lacks the answer, say so. Never invent account-specific facts or policies."},
-                    {"role": "user", "content": f"Question: {question}\\n\\nContext:\\n{context}"},
+                    {"role": "user", "content": f"Question: {question}\n\nContext:\n{context}"},
                 ],
             )
             return response.choices[0].message.content or fallback_answer(question, matches), "openai_rag"
