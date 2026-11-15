@@ -41,9 +41,9 @@ def fallback_answer(question: str, matches: list) -> str:
         return "I couldn't find a sufficiently relevant knowledge-base article. Please create a support ticket or add an article on this topic."
     parts = []
     for article, _score in matches:
-        excerpt = re.sub(r"\\s+", " ", article.content).strip()
+        excerpt = re.sub(r"\s+", " ", article.content).strip()
         parts.append(f"**{article.title}:** {excerpt[:700]}")
-    return "I found this information in the support knowledge base. Please verify it for your specific account or integration.\\n\\n" + "\\n\\n".join(parts)
+    return "I found this information in the support knowledge base. Please verify it for your specific account or integration.\n\\n" + "\\n\\n".join(parts)
 
 def generate_answer(question: str, matches: list, api_key: str | None, model: str):
     if api_key and matches:
