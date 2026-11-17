@@ -136,6 +136,4 @@ project-name/
 └── .gitignore
 ```
 
-## Resume Guidance
 
-Do not list a project as completed until it is genuinely implemented and you can explain its architecture, code, trade-offs, and results in an interview. Add quantified outcomes only when they come from your actual experiments. Keep this repository as the portfolio roadmap; create a separate repository for each substantial implementation.
